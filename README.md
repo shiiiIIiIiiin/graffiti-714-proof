@@ -18,69 +18,60 @@ Let $`S`$ be the sum of the positive eigenvalues; since $`\mathrm{tr}\, A = 0`$,
 of the negative eigenvalues. Let $`N`$ be the number of nonpositive eigenvalues (zeros included). The conjecture says
 
 $$
-\frac{S}{N} \le R := \sum_{v} \frac{n - d(v)}{d(v)},
+\frac{S}{N} \le R := \sum_{v} \frac{n - d(v)}{d(v)}
 $$
 
 for every graph without isolated vertices (otherwise the right side is undefined).
 
 ## Theorem
 
-Let $`G`$ be a graph with $`n \ge 2`$ vertices, no isolated vertex and average degree $`d`$, let $`h = n - 1 - d`$
-(the average degree of the complement), and let $`q`$ be the number of negative eigenvalues. Then
+Let $`G`$ be a graph with $`n \ge 2`$ vertices, no isolated vertex and average degree $`d`$,
+and let $`q`$ be the number of negative eigenvalues. Then
 
 $$
-\frac{S}{N} \le \frac{S}{q} \le 1 + \sqrt{h \left( h + \frac{(h+1)^2}{d} \right)} < \frac{n(n-d)}{d} \le R .
+\frac{S}{N} \le \frac{S}{q} \le (n-d) \sqrt{\frac{n}{d}} < \frac{n(n-d)}{d} \le R .
 $$
 
-In particular conjecture 714 holds for every graph, and never with equality. Moreover $`R - S/N \ge (n-d)^2/(2d)`$.
+In particular conjecture 714 holds for every graph, never with equality, and in fact $`S/N \le \sqrt{d/n} \cdot R`$.
 
 ## Proof
 
-Write $`\bar{A} = J - I - A`$ for the adjacency matrix of the complement $`\bar{G}`$, let $`\mu_1 \le \dots \le \mu_n`$
-be the eigenvalues of $`A`$ and $`\nu_1 \ge \dots \ge \nu_n`$ those of $`\bar{A}`$.
-Since $`G`$ has an edge and $`\mathrm{tr}\, A = 0`$, we have $`1 \le q \le n - 1`$, and $`q \le N`$.
-Note that $`n = d + h + 1`$.
+Since $`G`$ has an edge, $`A \ne 0`$, and $`\mathrm{tr}\, A = 0`$, so $`A`$ has both positive and negative eigenvalues:
+$`1 \le q \le n - 1`$, and $`q \le N`$. Also $`1 \le d \le n - 1`$.
 
-**Step 1 (a dense graph has many negative eigenvalues).** $`q \ge d/(h+1)`$.
+**Step 1 (a dense graph has a large clique, hence many negative eigenvalues).** $`q \ge d/(n-d)`$.
 
-By the Caro–Wei bound applied to $`\bar{G}`$ and the inequality between arithmetic and harmonic means,
-the clique number of $`G`$ satisfies
+Order the vertices uniformly at random and select a vertex $`v`$ if it comes before all vertices not adjacent to it.
+Two non-adjacent vertices cannot both be selected, so the selected vertices form a clique. Since $`v`$ competes with
+itself and its $`n - 1 - d(v)`$ non-neighbours, it is selected with probability $`1/(n - d(v))`$. Hence, using the
+inequality between arithmetic and harmonic means, the clique number satisfies
 
 $$
-\omega(G) = \alpha(\bar{G}) \ge \sum_v \frac{1}{d_{\bar{G}}(v) + 1} \ge \frac{n^2}{\sum_v (d_{\bar{G}}(v) + 1)} = \frac{n}{h+1}.
+\omega \ge \sum_v \frac{1}{n - d(v)} \ge \frac{n^2}{\sum_v (n - d(v))} = \frac{n}{n-d}.
 $$
 
 On a maximum clique $`K`$, every nonzero vector $`x`$ supported on $`K`$ with coordinate sum $`0`$ satisfies
 $`x^{\mathsf{T}} A x = (\sum_i x_i)^2 - \lVert x \rVert^2 = -\lVert x \rVert^2 < 0`$. These vectors form a subspace of
-dimension $`\omega - 1`$, so by the Courant–Fischer theorem $`A`$ has at least $`\omega - 1`$ negative eigenvalues.
-Hence $`q \ge n/(h+1) - 1 = d/(h+1)`$.
+dimension $`\omega - 1`$, which meets the span of the eigenvectors with nonnegative eigenvalues only in $`0`$.
+So $`A`$ has at least $`\omega - 1`$ negative eigenvalues, and $`q \ge n/(n-d) - 1 = d/(n-d)`$.
 
-**Step 2 (the negative eigenvalues of $`A`$ are controlled by $`\bar{A}`$).** $`S \le q + T`$, where $`T = \nu_1 + \dots + \nu_q`$.
+**Step 2 (the negative eigenvalues are controlled by the non-edges).** $`S \le \sqrt{n(n-d)q}`$.
 
-$`A = (-I - \bar{A}) + J`$ and $`J`$ is positive semidefinite, so the Courant–Fischer theorem gives $`\mu_i \ge -1 - \nu_i`$
-for every $`i`$. Summing over the $`q`$ negative eigenvalues, $`S = -(\mu_1 + \dots + \mu_q) \le q + T`$.
-
-**Step 3 (the top eigenvalues of $`\bar{A}`$ are balanced by the others).** $`T^2 \le h q (n - q)`$.
-
-We have $`\sum_i \nu_i = \mathrm{tr}\, \bar{A} = 0`$ and $`\sum_i \nu_i^2 = \mathrm{tr}\, \bar{A}^2 = nh`$.
-The $`q`$ largest eigenvalues add up to $`T`$ and the other $`n - q`$ to $`-T`$. The Cauchy–Schwarz inequality on each group gives
+Let $`P`$ be the orthogonal projection onto the span of the eigenvectors of the negative eigenvalues.
+Then $`\mathrm{tr}\, P = \mathrm{tr}\, P^2 = q`$ and $`\mathrm{tr}(AP) = -S`$. With $`\mathbf{1}`$ the all-ones vector,
+$`\mathrm{tr}(JP) = \mathbf{1}^{\mathsf{T}} P \mathbf{1} = \lVert P \mathbf{1} \rVert^2 \ge 0`$.
+The matrix $`B = J - A`$ has entries $`0`$ and $`1`$, with a $`1`$ on the diagonal and at every non-adjacent pair,
+so it has $`n^2 - 2m = n(n-d)`$ ones. By the Cauchy–Schwarz inequality on the entries,
 
 $$
-\frac{T^2}{q} + \frac{T^2}{n-q} \le \sum_{i \le q} \nu_i^2 + \sum_{i > q} \nu_i^2 = nh,
+S \le \mathrm{tr}(JP) + S = \mathrm{tr}(BP) = \sum_{i,j} B_{ij} P_{ij}
+\le \sqrt{\sum_{i,j} B_{ij}^2} \sqrt{\sum_{i,j} P_{ij}^2} = \sqrt{n(n-d)} \sqrt{q}.
 $$
 
-that is, $`T^2 \le h q (n-q)`$.
-
-**Conclusion.** Steps 2 and 3 give $`S/q \le 1 + \sqrt{h (n-q)/q}`$. By Step 1,
+**Step 3 (conclusion).** By Steps 2 and 1, and since $`d \lt n`$,
 
 $$
-\frac{n-q}{q} = \frac{n}{q} - 1 \le \frac{n(h+1)}{d} - 1 = h + \frac{(h+1)^2}{d} =: B .
-$$
-
-Since $`B > h \ge 0`$, we have $`\sqrt{hB} < B`$, and therefore
-
-$$
-\frac{S}{N} \le \frac{S}{q} \le 1 + \sqrt{hB} < 1 + B = \frac{n(h+1)}{d} = \frac{n(n-d)}{d}.
+\frac{S}{N} \le \frac{S}{q} \le \sqrt{\frac{n(n-d)}{q}} \le \sqrt{\frac{n(n-d)^2}{d}} = (n-d) \sqrt{\frac{n}{d}} < \frac{n(n-d)}{d}.
 $$
 
 Finally, by the inequality between arithmetic and harmonic means, $`\sum_v 1/d(v) \ge n/d`$, so
@@ -89,9 +80,8 @@ $$
 R = n \sum_v \frac{1}{d(v)} - n \ge \frac{n^2}{d} - n = \frac{n(n-d)}{d}. \qquad \square
 $$
 
-For the margin, $`\sqrt{hB} \le (h + B)/2`$ gives $`R - S/N \ge (B - h)/2 = (h+1)^2/(2d) = (n-d)^2/(2d)`$.
-
 *Remarks.* For complete graphs $`S/N = 1`$ and $`R = n/(n-1)`$. Connectivity is never used.
+Version 1.0.0 of this repository contains a different proof, which compares the eigenvalues of $`A`$ with those of the complement.
 
 ## Numerical check
 
@@ -104,8 +94,6 @@ and complete graphs. It is not part of the proof. Requires Python 3, networkx an
 - S. Fajtlowicz, *Written on the Wall* (July 2004 version).
 - T. L. Brewster, M. J. Dinneen, V. Faber, A computational attack on the conjectures of Graffiti: New counterexamples and proofs,
   Discrete Math. 147 (1995) 35–55.
-- Y. Caro, New results on the independence number, Technical report, Tel-Aviv University, 1979;
-  V. K. Wei, A lower bound on the stability number of a simple graph, Bell Laboratories Technical Memorandum, 1981 (the Caro–Wei bound).
 
 ## License
 

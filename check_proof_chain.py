@@ -1,9 +1,8 @@
 """Numerically check every inequality in the proof of Graffiti 714 (README.md) on many graphs.
 
-  q >= d/(h+1)                                   (1)
-  T/q <= sqrt(h (n-q)/q)                         (2)
-  S/q <= 1 + T/q                                 (3)
-  S/N <= S/q <= 1 + sqrt(h B) < 1 + B = n(n-d)/d <= R,   B = h + (h+1)^2/d
+  q >= omega - 1 >= d/(n-d)                          (Step 1)
+  S <= sqrt(n (n-d) q)                               (Step 2)
+  S/N <= S/q <= (n-d) sqrt(n/d) < n(n-d)/d <= R      (Step 3)
 """
 import random
 
@@ -22,19 +21,17 @@ def check(G):
     S = lam[lam > tol].sum()
     N = int((lam <= tol).sum())
     q = int((lam < -tol).sum())
-    nu = np.sort(np.linalg.eigvalsh(1 - A - np.eye(n)))[::-1]
-    T = nu[:q].sum()
     d = deg.mean()
-    h = n - 1 - d
-    B = h + (h + 1) ** 2 / d
     R = ((n - deg) / deg).sum()
+    omega = max(len(c) for c in nx.find_cliques(G)) if n <= 40 else None
     links = [
-        ("q >= d/(h+1)", q + EPS >= d / (h + 1)),
-        ("T/q <= sqrt(h(n-q)/q)", T / q <= np.sqrt(h * (n - q) / q) + EPS),
-        ("S/q <= 1 + T/q", S / q <= 1 + T / q + EPS),
+        ("q >= d/(n-d)", q + EPS >= d / (n - d)),
+        ("q >= omega - 1", omega is None or q >= omega - 1),
+        ("omega >= n/(n-d)", omega is None or omega + EPS >= n / (n - d)),
+        ("S <= sqrt(n(n-d)q)", S <= np.sqrt(n * (n - d) * q) + EPS),
         ("S/N <= S/q", S / N <= S / q + EPS),
-        ("1 + sqrt(hB) < 1 + B", np.sqrt(h * B) < B),
-        ("1 + B = n(n-d)/d", abs(1 + B - n * (n - d) / d) < 1e-7 * (1 + B)),
+        ("S/q <= (n-d)sqrt(n/d)", S / q <= (n - d) * np.sqrt(n / d) + EPS),
+        ("(n-d)sqrt(n/d) < n(n-d)/d", (n - d) * np.sqrt(n / d) < n * (n - d) / d),
         ("n(n-d)/d <= R", n * (n - d) / d <= R + EPS),
         ("S/N < R", S / N < R),
     ]
